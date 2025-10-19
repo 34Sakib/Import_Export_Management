@@ -1,66 +1,230 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚢 Shipping Management System
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-10.x-red?style=for-the-badge&logo=laravel" alt="Laravel">
+  <img src="https://img.shields.io/badge/PHP-8.1+-blue?style=for-the-badge&logo=php" alt="PHP">
+  <img src="https://img.shields.io/badge/Bootstrap-5.x-purple?style=for-the-badge&logo=bootstrap" alt="Bootstrap">
+  <img src="https://img.shields.io/badge/DataTables-Yajra-green?style=for-the-badge" alt="DataTables">
 </p>
 
-## About Laravel
+A comprehensive **Shipping Management System** built with Laravel 10, featuring a modern admin panel, customer tracking interface, and service management capabilities. Perfect for logistics companies, freight forwarders, and shipping businesses.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🎛️ **Admin Panel**
+- **Service Management**: Full CRUD operations with DataTables integration
+- **Image Upload**: Secure file handling with validation
+- **Responsive Dashboard**: Modern AdminLTE-based interface
+- **Real-time Data**: Server-side processing with Yajra DataTables
+- **User Authentication**: Secure admin login system
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🌐 **Frontend Features**
+- **Service Showcase**: Dynamic service display from database
+- **Shipment Tracking**: Real-time tracking interface
+- **Shipping History**: Complete shipment history management
+- **Responsive Design**: Mobile-first approach with Bootstrap
+- **Modern UI**: Clean, professional design
 
-## Learning Laravel
+### 📦 **Service Types**
+- Ocean Freight Shipping
+- Air Freight Shipping
+- Car Shipping
+- Custom Service Management
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Tech Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Backend**: Laravel 10.x (PHP 8.1+)
+- **Frontend**: Bootstrap 5, AdminLTE 3
+- **Database**: MySQL/PostgreSQL
+- **DataTables**: Yajra Laravel DataTables
+- **Authentication**: Laravel Breeze
+- **Build Tools**: Vite, TailwindCSS
+- **Icons**: Font Awesome, Lucide
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📋 Requirements
 
-## Laravel Sponsors
+- PHP >= 8.1
+- Composer
+- Node.js & NPM
+- MySQL/PostgreSQL
+- Web Server (Apache/Nginx)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Installation
 
-### Premium Partners
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd shipping-project
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 2. Install Dependencies
+```bash
+# Install PHP dependencies
+composer install
 
-## Contributing
+# Install Node.js dependencies
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Environment Setup
+```bash
+# Copy environment file
+cp .env.example .env
 
-## Code of Conduct
+# Generate application key
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Database Configuration
+Update your `.env` file with database credentials:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=shipping_db
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-## Security Vulnerabilities
+### 5. Run Migrations
+```bash
+php artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 6. Create Storage Link
+```bash
+php artisan storage:link
+```
 
-## License
+### 7. Build Assets
+```bash
+# Development
+npm run dev
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Production
+npm run build
+```
+
+### 8. Start Development Server
+```bash
+php artisan serve
+```
+
+Visit `http://localhost:8000` to access the application.
+
+## 📁 Project Structure
+
+```
+shipping-project/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── Admin/           # Admin panel controllers
+│   │   └── Frontend/        # Frontend controllers
+│   └── Models/
+│       └── Service.php      # Service model
+├── resources/
+│   └── views/
+│       ├── backend/         # Admin panel views
+│       │   ├── layout/      # Admin layouts
+│       │   └── pages/       # Admin pages
+│       └── frontend/        # Frontend views
+│           ├── services/    # Service pages
+│           ├── shipping/    # Shipping pages
+│           └── track/       # Tracking pages
+├── routes/
+│   ├── admin.php           # Admin routes
+│   └── web.php             # Frontend routes
+└── public/
+    └── images/             # Uploaded service images
+```
+
+## 🎯 Usage
+
+### Admin Panel Access
+1. Navigate to `/admin/login`
+2. Use admin credentials to login
+3. Access service management at `/admin/service`
+
+### Service Management
+- **Create**: Add new services with images and descriptions
+- **Read**: View all services in DataTables format
+- **Update**: Edit existing service information
+- **Delete**: Remove services with confirmation
+
+### Frontend Features
+- **Homepage**: Dynamic service showcase
+- **Tracking**: Shipment tracking interface
+- **Services**: Detailed service pages
+- **History**: Shipping history management
+
+## 🔧 Configuration
+
+### DataTables Configuration
+The system uses Yajra DataTables for efficient data handling:
+- Server-side processing
+- Responsive design
+- Search and pagination
+- Custom action buttons
+
+### Image Upload Settings
+- **Allowed formats**: JPEG, PNG, AVIF, JPG, GIF, SVG, WebP
+- **Max file size**: 2MB
+- **Storage location**: `public/images/`
+- **Default image**: `nophoto.png`
+
+## 🎨 Customization
+
+### Adding New Service Types
+1. Update the Service model if needed
+2. Modify the admin form
+3. Update frontend display templates
+
+### Styling Modifications
+- Admin panel: Modify AdminLTE themes
+- Frontend: Update Bootstrap components
+- Custom CSS: Add to respective asset files
+
+## 🔒 Security Features
+
+- CSRF protection on all forms
+- File upload validation
+- SQL injection prevention
+- XSS protection
+- Secure authentication
+
+## 📱 Responsive Design
+
+- Mobile-first approach
+- Bootstrap 5 grid system
+- Responsive DataTables
+- Touch-friendly interfaces
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the repository
+- Check the Laravel documentation
+- Review the DataTables documentation
+
+## 🔄 Updates & Maintenance
+
+- Regular Laravel security updates
+- Dependency management with Composer
+- Asset optimization with Vite
+- Database backup recommendations
+
+---
+
+**Built with ❤️ using Laravel Framework**
