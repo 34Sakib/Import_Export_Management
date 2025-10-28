@@ -2,38 +2,155 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="hero-section position-relative d-flex align-items-center" style="min-height: 70vh; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center text-white">
-                <!-- Top Label -->
-                <div class="mb-3">
-                    <span class="badge bg-light text-dark px-3 py-2 rounded-pill fw-normal" style="font-size: 14px;">
-                        WE ARE ACTIVE
-                    </span>
+@if(isset($heroSlides) && $heroSlides->count() > 0)
+    <div class="hero-slider">
+        @foreach($heroSlides as $slide)
+            <div class="hero-slide position-relative d-flex align-items-center" 
+                 style="min-height: 70vh; background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('{{ $slide->image ? asset('storage/hero-slides/' . $slide->image) : 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80' }}') 
+                        center/cover no-repeat;">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 text-center text-white">
+                            @if($slide->subtitle)
+                                <!-- Top Label -->
+                                <div class="mb-3">
+                                    <span class="badge bg-light text-dark px-3 py-2 rounded-pill fw-normal" style="font-size: 14px;">
+                                        {{ $slide->subtitle }}
+                                    </span>
+                                </div>
+                            @endif
+                            
+                            <!-- Main Heading -->
+                            <h1 class="display-4 fw-bold mb-4" style="line-height: 1.2;">
+                                {!! $slide->title !!}
+                            </h1>
+                            
+                            <!-- Description -->
+                            @if($slide->description)
+                                <p class="lead mb-4 mx-auto" style="max-width: 600px; font-size: 18px; line-height: 1.6;">
+                                    {{ $slide->description }}
+                                </p>
+                            @endif
+                            
+                            <!-- CTA Button -->
+                            @if($slide->button_text && $slide->button_url)
+                                <div class="mt-4">
+                                    <a href="{{ $slide->button_url }}" class="btn btn-danger btn-lg px-5 py-3 fw-semibold text-uppercase" style="letter-spacing: 1px;">
+                                        {{ $slide->button_text }}
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Main Heading -->
-                <h1 class="display-4 fw-bold mb-4" style="line-height: 1.2;">
-                    TO SHIP YOUR PRODUCT 
-                    <span class="text-danger">TRUSTED</span>
-                </h1>
-                
-                <!-- Description -->
-                <p class="lead mb-4 mx-auto" style="max-width: 600px; font-size: 18px; line-height: 1.6;">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                </p>
-                
-                <!-- CTA Button -->
-                <div class="mt-4">
-                    <a href="#" class="btn btn-danger btn-lg px-5 py-3 fw-semibold text-uppercase" style="letter-spacing: 1px;">
-                        GET FREE QUOTE
-                    </a>
+            </div>
+        @endforeach
+    </div>
+@else
+    <!-- Default hero section if no slides are available -->
+    <section class="hero-section position-relative d-flex align-items-center" style="min-height: 70vh; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center text-white">
+                    <div class="mb-3">
+                        <span class="badge bg-light text-dark px-3 py-2 rounded-pill fw-normal" style="font-size: 14px;">
+                            WE ARE ACTIVE
+                        </span>
+                    </div>
+                    <h1 class="display-4 fw-bold mb-4" style="line-height: 1.2;">
+                        TO SHIP YOUR PRODUCT 
+                        <span class="text-danger">TRUSTED</span>
+                    </h1>
+                    <p class="lead mb-4 mx-auto" style="max-width: 600px; font-size: 18px; line-height: 1.6;">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-danger btn-lg px-5 py-3 fw-semibold text-uppercase" style="letter-spacing: 1px;">
+                            GET FREE QUOTE
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+@endif
+
+@push('scripts')
+<script>
+    $(document).ready(function(){
+        // Initialize Slick slider for hero section
+        if ($('.hero-slider').length) {
+            $('.hero-slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 800,
+                fade: true,
+                cssEase: 'linear',
+                autoplay: true,
+                autoplaySpeed: 5000,
+                arrows: true,
+                prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+                nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>',
+                responsive: [
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            arrows: false
+                        }
+                    }
+                ]
+            });
+        }
+    });
+</script>
+@endpush
+
+@push('styles')
+<style>
+    .hero-slider .slick-dots {
+        bottom: 30px;
+    }
+    .hero-slider .slick-dots li button:before {
+        font-size: 12px;
+        color: #fff;
+        opacity: 0.5;
+    }
+    .hero-slider .slick-dots li.slick-active button:before {
+        color: #dc3545;
+        opacity: 1;
+    }
+    .hero-slider .slick-arrow {
+        z-index: 1;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        border: none;
+        color: #fff;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+    .hero-slider .slick-arrow:hover {
+        background: #dc3545;
+    }
+    .hero-slider .slick-prev {
+        left: 30px;
+    }
+    .hero-slider .slick-next {
+        right: 30px;
+    }
+    .hero-slider .slick-arrow i {
+        font-size: 20px;
+        color: #fff;
+    }
+    .hero-slide {
+        padding: 100px 0;
+    }
+</style>
+@endpush
 
 
 <!-- Our Services Section -->
@@ -446,8 +563,48 @@
     </div>
 </section>
 
-<!-- Latest Blog Post Section -->
+<!-- Latest News Section -->
 <section class="py-5 bg-white">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-dark mb-3">LATEST NEWS</h2>
+            <p class="text-muted">Stay updated with our latest news and updates</p>
+        </div>
+        
+        <!-- News Grid -->
+        <div class="row g-4">
+            @forelse($latestNews as $news)
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    @if($news->image)
+                    <img src="{{ asset('images/' . $news->image) }}" class="card-img-top" alt="{{ $news->title }}" style="height: 200px; object-fit: cover;">
+                    @else
+                    <img src="https://via.placeholder.com/400x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                    @endif
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> {{ $news->created_at->format('M d, Y') }}</span>
+                        </div>
+                        <h5 class="card-title fw-bold">{{ $news->title }}</h5>
+                        <p class="card-text text-muted">{{ Str::limit($news->content, 100) }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <a href="#" class="btn btn-link text-danger p-0">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <div class="col-12 text-center">
+                <p class="text-muted">No news available at the moment. Check back later!</p>
+            </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+
+<!-- Latest Blog Post Section -->
+<section class="py-5 bg-light">
     <div class="container">
         <!-- Section Header -->
         <div class="text-center mb-5">
@@ -457,116 +614,52 @@
         
         <!-- Blog Cards -->
         <div class="row g-4">
-            <!-- Blog Post 1 -->
+            @forelse($latestBlogPosts as $post)
             <div class="col-lg-4 col-md-6">
                 <div class="blog-card bg-white shadow-sm h-100">
                     <div class="blog-image">
-                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Shipping Container" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        @if($post->featured_image)
+                            <img src="{{ asset('images/' . $post->featured_image) }}" 
+                                 alt="{{ $post->title }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        @else
+                            <img src="https://via.placeholder.com/800x400?text=No+Image" 
+                                 alt="{{ $post->title }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        @endif
                     </div>
                     <div class="blog-content p-4">
                         <h5 class="fw-bold mb-3 text-dark" style="line-height: 1.4;">
-                            SHIPPING CONTAINER ALL INTERNATIONAL TRANSPORT
+                            {{ strtoupper($post->title) }}
                         </h5>
                         
                         <!-- Blog Meta -->
                         <div class="blog-meta d-flex align-items-center mb-3 text-muted" style="font-size: 12px;">
                             <div class="me-3">
                                 <i class="fas fa-calendar-alt me-1"></i>
-                                <span>18 March 2017</span>
+                                <span>{{ $post->published_at ? $post->published_at->format('d F Y') : $post->created_at->format('d F Y') }}</span>
                             </div>
                             <div>
                                 <i class="fas fa-user me-1"></i>
-                                <span>By Admin</span>
+                                <span>Admin</span>
                             </div>
                         </div>
                         
                         <!-- Blog Excerpt -->
                         <p class="text-muted mb-4" style="font-size: 14px; line-height: 1.6;">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                            {{ $post->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($post->content), 150) }}
                         </p>
                         
                         <!-- Read More Link -->
-                        <a href="#" class="text-danger fw-semibold text-decoration-none" style="font-size: 12px; letter-spacing: 0.5px;">
+                        <a href="{{ route('blog.show', $post->slug) }}" class="text-danger fw-semibold text-decoration-none" style="font-size: 12px; letter-spacing: 0.5px;">
                             READ MORE <i class="fas fa-chevron-right ms-1"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            
-            <!-- Blog Post 2 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="blog-card bg-white shadow-sm h-100">
-                    <div class="blog-image">
-                        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Truck Transport" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
-                    </div>
-                    <div class="blog-content p-4">
-                        <h5 class="fw-bold mb-3 text-dark" style="line-height: 1.4;">
-                            LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING.
-                        </h5>
-                        
-                        <!-- Blog Meta -->
-                        <div class="blog-meta d-flex align-items-center mb-3 text-muted" style="font-size: 12px;">
-                            <div class="me-3">
-                                <i class="fas fa-calendar-alt me-1"></i>
-                                <span>18 March 2017</span>
-                            </div>
-                            <div>
-                                <i class="fas fa-user me-1"></i>
-                                <span>By Admin</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Blog Excerpt -->
-                        <p class="text-muted mb-4" style="font-size: 14px; line-height: 1.6;">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                        </p>
-                        
-                        <!-- Read More Link -->
-                        <a href="#" class="text-danger fw-semibold text-decoration-none" style="font-size: 12px; letter-spacing: 0.5px;">
-                            READ MORE <i class="fas fa-chevron-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
+            @empty
+            <div class="col-12 text-center">
+                <p class="text-muted">No blog posts found.</p>
             </div>
-            
-            <!-- Blog Post 3 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="blog-card bg-white shadow-sm h-100">
-                    <div class="blog-image">
-                        <img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Air Cargo" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
-                    </div>
-                    <div class="blog-content p-4">
-                        <h5 class="fw-bold mb-3 text-dark" style="line-height: 1.4;">
-                            ALL SHIPPING CONTAINER ARE INTERNATIONAL TRANSPORT
-                        </h5>
-                        
-                        <!-- Blog Meta -->
-                        <div class="blog-meta d-flex align-items-center mb-3 text-muted" style="font-size: 12px;">
-                            <div class="me-3">
-                                <i class="fas fa-calendar-alt me-1"></i>
-                                <span>18 March 2017</span>
-                            </div>
-                            <div>
-                                <i class="fas fa-user me-1"></i>
-                                <span>By Admin</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Blog Excerpt -->
-                        <p class="text-muted mb-4" style="font-size: 14px; line-height: 1.6;">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                        </p>
-                        
-                        <!-- Read More Link -->
-                        <a href="#" class="text-danger fw-semibold text-decoration-none" style="font-size: 12px; letter-spacing: 0.5px;">
-                            READ MORE <i class="fas fa-chevron-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -651,41 +744,32 @@
                         <div class="bg-danger" style="width: 50px; height: 3px;"></div>
                     </div>
                     
+                    @if($latestNews->count() > 0)
                     <!-- News Items -->
                     <div class="news-items">
-                        <!-- News Item 1 -->
+                        @foreach($latestNews as $news)
                         <div class="news-item d-flex mb-3">
                             <div class="news-date bg-danger text-white text-center p-3 me-3" style="min-width: 80px;">
-                                <div class="date-number fw-bold" style="font-size: 2rem; line-height: 1;">28</div>
-                                <div class="date-month text-uppercase" style="font-size: 12px; letter-spacing: 1px;">FEB</div>
+                                <div class="date-number fw-bold" style="font-size: 2rem; line-height: 1;">{{ $news->created_at->format('d') }}</div>
+                                <div class="date-month text-uppercase" style="font-size: 12px; letter-spacing: 1px;">{{ strtoupper($news->created_at->format('M')) }}</div>
                             </div>
                             <div class="news-content bg-white p-3 flex-grow-1 shadow-sm">
-                                <h6 class="fw-bold mb-2 text-dark">News Title</h6>
+                                <h6 class="fw-bold mb-2 text-dark">{{ $news->title }}</h6>
                                 <p class="text-muted mb-1" style="font-size: 12px;">
-                                    By <span class="text-danger">Admin</span>
+                                    By <span class="text-danger">{{ $news->author ?? 'Admin' }}</span>
                                 </p>
                                 <p class="text-muted mb-0" style="font-size: 13px; line-height: 1.4;">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                    {{ Str::limit(strip_tags($news->content), 100) }}
                                 </p>
                             </div>
                         </div>
-                        
-                        <!-- News Item 2 -->
-                        <div class="news-item d-flex mb-3">
-                            <div class="news-date bg-danger text-white text-center p-3 me-3" style="min-width: 80px;">
-                                <div class="date-number fw-bold" style="font-size: 2rem; line-height: 1;">23</div>
-                                <div class="date-month text-uppercase" style="font-size: 12px; letter-spacing: 1px;">MAR</div>
-                            </div>
-                            <div class="news-content bg-white p-3 flex-grow-1 shadow-sm">
-                                <h6 class="fw-bold mb-2 text-dark">News Title</h6>
-                                <p class="text-muted mb-1" style="font-size: 12px;">
-                                    By <span class="text-danger">Admin</span>
-                                </p>
-                                <p class="text-muted mb-0" style="font-size: 13px; line-height: 1.4;">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                </p>
-                            </div>
-                        </div>
+                        @endforeach
+                    </div>
+                    @else
+                    <div class="text-center py-4">
+                        <p class="text-muted">No news available at the moment. Check back later!</p>
+                    </div>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -694,129 +778,60 @@
             <div class="col-lg-6">
                 <div class="testimonial-section">
                     <!-- Section Header -->
-                    <div class="section-header mb-4">
-                        <h3 class="fw-bold text-dark mb-2">TESTIMONIAL</h3>
-                        <div class="bg-danger" style="width: 50px; height: 3px;"></div>
+                    <div class="section-header mb-4 text-center">
+                        <h2 class="display-5 fw-bold text-dark mb-2">TESTIMONIALS</h2>
+                        <div class="bg-danger mx-auto" style="width: 50px; height: 3px;"></div>
+                        <p class="text-muted mt-3">What our clients say about our services</p>
                     </div>
                     
+                    @if($testimonials->count() > 0)
                     <!-- Testimonial Carousel -->
                     <div class="testimonial-carousel">
-                        <!-- Testimonial 1 -->
+                        @foreach($testimonials as $testimonial)
+                        <!-- Testimonial Item -->
                         <div class="testimonial-item">
                             <div class="testimonial-content d-flex">
                                 <!-- Client Photo -->
                                 <div class="testimonial-image me-4" style="min-width: 120px;">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                                         alt="Client" class="img-fluid rounded" style="width: 120px; height: 120px; object-fit: cover;">
+                                    @if($testimonial->image)
+                                    <img src="{{ asset('images/' . $testimonial->image) }}" 
+                                         alt="{{ $testimonial->name }}" class="rounded-circle img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
+                                    @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=random" 
+                                         alt="{{ $testimonial->name }}" class="rounded-circle img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
+                                    @endif
                                 </div>
                                 
-                                <!-- Quote Content -->
-                                <div class="testimonial-quote bg-danger text-white p-4 position-relative flex-grow-1">
-                                    <!-- Quote Icon -->
-                                    <div class="quote-icon position-absolute" style="top: 10px; left: 20px; font-size: 2rem; color: rgba(255,255,255,0.2);">
-                                        <i class="fas fa-quote-left"></i>
+                                <!-- Testimonial Text -->
+                                <div class="testimonial-text">
+                                    <div class="testimonial-rating mb-2">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $testimonial->rating)
+                                            <i class="fas fa-star text-warning"></i>
+                                            @else
+                                            <i class="far fa-star text-warning"></i>
+                                            @endif
+                                        @endfor
                                     </div>
                                     
-                                    <!-- Client Info -->
-                                    <div class="d-flex align-items-center mb-2">
-                                        <h5 class="text-white mb-0 me-2">John Doe</h5>
-                                        <span class="text-white-50" style="font-size: 12px;">CEO, Company Name</span>
-                                    </div>
-                                    
-                                    <!-- Rating -->
-                                    <div class="mb-2">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                    </div>
-                                    
-                                    <!-- Quote Text -->
-                                    <p class="mb-0" style="font-size: 14px; line-height: 1.6; position: relative; z-index: 1;">
-                                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+                                    <p class="fst-italic text-muted mb-3">
+                                        "{{ $testimonial->content }}"
                                     </p>
+                                    
+                                    <h5 class="mb-1 fw-bold">{{ $testimonial->name }}</h5>
+                                    @if($testimonial->position)
+                                    <p class="text-muted small mb-0">{{ $testimonial->position }}{{ $testimonial->company ? ', ' . $testimonial->company : '' }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Testimonial 2 -->
-                        <div class="testimonial-item">
-                            <div class="testimonial-content d-flex">
-                                <!-- Client Photo -->
-                                <div class="testimonial-image me-4" style="min-width: 120px;">
-                                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                                         alt="Client" class="img-fluid rounded" style="width: 120px; height: 120px; object-fit: cover;">
-                                </div>
-                                
-                                <!-- Quote Content -->
-                                <div class="testimonial-quote bg-danger text-white p-4 position-relative flex-grow-1">
-                                    <!-- Quote Icon -->
-                                    <div class="quote-icon position-absolute" style="top: 10px; left: 20px; font-size: 2rem; color: rgba(255,255,255,0.2);">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    
-                                    <!-- Client Info -->
-                                    <div class="d-flex align-items-center mb-2">
-                                        <h5 class="text-white mb-0 me-2">Jane Smith</h5>
-                                        <span class="text-white-50" style="font-size: 12px;">Marketing Director</span>
-                                    </div>
-                                    
-                                    <!-- Rating -->
-                                    <div class="mb-2">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star-half-alt text-warning"></i>
-                                    </div>
-                                    
-                                    <!-- Quote Text -->
-                                    <p class="mb-0" style="font-size: 14px; line-height: 1.6; position: relative; z-index: 1;">
-                                        "The shipping service was excellent! My package arrived ahead of schedule and in perfect condition. Highly recommended for all your shipping needs."
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Testimonial 3 -->
-                        <div class="testimonial-item">
-                            <div class="testimonial-content d-flex">
-                                <!-- Client Photo -->
-                                <div class="testimonial-image me-4" style="min-width: 120px;">
-                                    <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                                         alt="Client" class="img-fluid rounded" style="width: 120px; height: 120px; object-fit: cover;">
-                                </div>
-                                
-                                <!-- Quote Content -->
-                                <div class="testimonial-quote bg-danger text-white p-4 position-relative flex-grow-1">
-                                    <!-- Quote Icon -->
-                                    <div class="quote-icon position-absolute" style="top: 10px; left: 20px; font-size: 2rem; color: rgba(255,255,255,0.2);">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    
-                                    <!-- Client Info -->
-                                    <div class="d-flex align-items-center mb-2">
-                                        <h5 class="text-white mb-0 me-2">Michael Johnson</h5>
-                                        <span class="text-white-50" style="font-size: 12px;">Business Owner</span>
-                                    </div>
-                                    
-                                    <!-- Rating -->
-                                    <div class="mb-2">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="far fa-star text-warning"></i>
-                                    </div>
-                                    
-                                    <!-- Quote Text -->
-                                    <p class="mb-0" style="font-size: 14px; line-height: 1.6; position: relative; z-index: 1;">
-                                        "Professional service from start to finish. The team was very helpful and responsive throughout the entire shipping process. Will definitely use again!"
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+                    </div>
+                    @else
+                    <div class="text-center py-4">
+                        <p class="text-muted">No testimonials available at the moment. Check back later!</p>
+                    </div>
+                    @endif
                     </div>
                 </div>
             </div>

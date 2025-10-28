@@ -44,6 +44,7 @@ Route::get('/shipping-history', [FrontendController::class, 'shippingHistory'])-
 
 //blog pages
 Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
+Route::get('/blog/{slug}', [FrontendController::class, 'showPost'])->name('blog.show');
 
 //about us page
 Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('about.us');

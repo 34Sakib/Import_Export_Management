@@ -1,27 +1,39 @@
 <!-- Sticky Header Wrapper -->
 <div id="stickyHeader" class="sticky-header-wrapper">
 <!-- Top Bar -->
+@php
+    use App\Models\TopBarSetting;
+    $topBar = TopBarSetting::where('is_active', true)->first();
+@endphp
+
+@if($topBar)
 <div class="bg-dark text-white py-2 mobile-top-bar" style="font-size: 13px;">
     <div class="container">
         <!-- Desktop View -->
         <div class="row align-items-center d-none d-md-flex">
             <div class="col-md-8">
                 <div class="d-flex flex-wrap gap-4">
+                    @if($topBar->email)
                     <div class="d-flex align-items-center">
                         <i class="fas fa-envelope me-2 text-danger"></i>
-                        <span>info@worldshipping.com</span>
+                        <span>{{ $topBar->email }}</span>
                     </div>
+                    @endif
+                    @if($topBar->phone)
                     <div class="d-flex align-items-center">
                         <i class="fas fa-phone me-2 text-danger"></i>
-                        <span>+88 01911 837404</span>
+                        <span>{{ $topBar->phone }}</span>
                     </div>
+                    @endif
+                    @if($topBar->opening_hours)
                     <div class="d-flex align-items-center">
                         <i class="fas fa-clock me-2 text-danger"></i>
-                        <span>9:00AM to 8:00PM</span>
+                        <span>{{ $topBar->opening_hours }}</span>
                     </div>
+                    @endif
                 </div>
             </div>
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
                 <div class="d-flex justify-content-end align-items-center gap-3">
                     @if (Route::has('login'))
                         @auth
@@ -58,7 +70,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         
         <!-- Mobile View -->
@@ -67,24 +79,33 @@
                 <!-- Contact Info Row -->
                 <div class="col-12 mb-2">
                     <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+                        @if($topBar->email)
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-envelope me-1 text-danger"></i>
-                            <span style="font-size: 11px;">info@worldshipping.com</span>
+                            <i class="fas fa-envelope me-2 text-danger"></i>
+                            <span>{{ $topBar->email }}</span>
                         </div>
-                        <span class="text-white">|</span>
+                        @endif
+                        @if($topBar->phone)
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-phone me-1 text-danger"></i>
-                            <span style="font-size: 11px;">+88 01911 837404</span>
+                            <i class="fas fa-phone me-2 text-danger"></i>
+                            <span>{{ $topBar->phone }}</span>
                         </div>
-                        <span class="text-white">|</span>
+                        @endif
+                    </div>
+                </div>
+                <!-- Hours Row -->
+                @if($topBar->opening_hours)
+                <div class="col-12">
+                    <div class="d-flex justify-content-center">
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-clock me-1 text-danger"></i>
-                            <span style="font-size: 11px;">9:00AM to 8:00PM</span>
+                            <i class="fas fa-clock me-2 text-danger"></i>
+                            <span>{{ $topBar->opening_hours }}</span>
                         </div>
                     </div>
                 </div>
+                @endif
                 
-                <!-- Login/Language Row -->
+                {{-- <!-- Login/Language Row -->
                 <div class="col-12">
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         @if (Route::has('login'))
@@ -122,11 +143,12 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
 </div>
+@endif
 
 <!-- Main Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
@@ -159,7 +181,7 @@
                         <li><a class="dropdown-item shipping-dropdown-item" href="{{ route('car.shipping') }}">CAR FREIGHT SHIPPING</a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle fw-semibold text-dark px-3 py-2" href="#" id="shippingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 14px; letter-spacing: 0.5px;">
                         SHIPPING
                     </a>
@@ -177,7 +199,7 @@
                         <li><a class="dropdown-item shipping-dropdown-item" href="{{ route('tracking') }}">TRACKING</a></li>
                         <li><a class="dropdown-item shipping-dropdown-item" href="{{ route('your.shipping') }}">YOUR SHIPPING PROCESS</a></li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-dark px-3 py-2" href="{{ route('blog') }}" style="font-size: 14px; letter-spacing: 0.5px;">BLOG</a>
                 </li>

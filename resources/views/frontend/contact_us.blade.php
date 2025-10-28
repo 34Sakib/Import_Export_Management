@@ -12,14 +12,6 @@
                 <h1 class="contact-hero-title mb-3">CONTACT US</h1>
                 
                 <!-- Breadcrumb Navigation -->
-                <nav aria-label="breadcrumb" class="mb-4">
-                    <ol class="breadcrumb justify-content-center contact-breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('home') }}" class="text-white text-decoration-none">Home</a>
-                        </li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">Contact Us</li>
-                    </ol>
-                </nav>
                 
                 <!-- Description Text -->
                 <p class="contact-hero-description lead mb-0">

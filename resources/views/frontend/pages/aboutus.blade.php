@@ -11,16 +11,6 @@
                 <!-- Page Title -->
                 <h1 class="shipping-hero-title mb-3">About Us</h1>
                 
-                <!-- Breadcrumb Navigation -->
-                <nav aria-label="breadcrumb" class="mb-4">
-                    <ol class="breadcrumb justify-content-center shipping-breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('home') }}" class="text-white text-decoration-none">Home</a>
-                        </li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">About Us</li>
-                    </ol>
-                </nav>
-                
                 <!-- Description Text -->
                 <p class="shipping-hero-description lead mb-0">
                     We freight to all over the world The best logistic company, 
@@ -38,164 +28,28 @@
 <!-- About Us Content Section -->
 <section class="about-content-section py-5">
     <div class="container">
-        <div class="row">
-            <!-- Left Sidebar -->
-            <div class="col-lg-3 col-md-4">
-                <div class="about-sidebar">
-                    <!-- Navigation Menu -->
-                    <div class="about-nav-menu mb-4">
-                        <ul class="about-nav-list">
-                            <li class="about-nav-item active">
-                                <a href="#" class="about-nav-link">
-                                    COMPANY OVERVIEW
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                            <li class="about-nav-item">
-                                <a href="#" class="about-nav-link">
-                                    ASPIRATION & VISION
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                            <li class="about-nav-item">
-                                <a href="#" class="about-nav-link">
-                                    STRENGTH
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                            <li class="about-nav-item">
-                                <a href="#" class="about-nav-link">
-                                    QUALITY POLICY
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Latest News -->
-                    <div class="latest-news-widget">
-                        <h5 class="news-widget-title">LATEST NEWS</h5>
-                        <div class="news-items">
-                            <!-- News Item 1 -->
-                            <div class="news-item mb-3">
-                                <div class="d-flex">
-                                    <div class="news-date">
-                                        <span class="date-day">28</span>
-                                        <span class="date-month">FEB</span>
-                                    </div>
-                                    <div class="news-content">
-                                        <h6 class="news-title">News Title</h6>
-                                        <p class="news-author">By <a href="#" class="text-danger">Admin</a></p>
-                                        <p class="news-excerpt">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- News Item 2 -->
-                            <div class="news-item mb-3">
-                                <div class="d-flex">
-                                    <div class="news-date">
-                                        <span class="date-day">28</span>
-                                        <span class="date-month">FEB</span>
-                                    </div>
-                                    <div class="news-content">
-                                        <h6 class="news-title">News Title</h6>
-                                        <p class="news-author">By <a href="#" class="text-danger">Admin</a></p>
-                                        <p class="news-excerpt">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Send Quote Button -->
-                        <div class="quote-button-wrapper mt-4">
-                            <a href="#" class="btn btn-danger quote-btn w-100">SEND US QUOTE</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Main Content -->
-            <div class="col-lg-6 col-md-8">
-                <div class="about-main-content">
-                    <!-- Company Overview Header -->
-                    <div class="content-header mb-4">
-                        <h2 class="content-title">COMPANY OVERVIEW</h2>
-                    </div>
-                    
-                    <!-- Company Image -->
-                    <div class="company-image mb-4">
-                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600&q=80" alt="Company Overview" class="img-fluid rounded">
-                    </div>
-                    
-                    <!-- Company Description -->
-                    <div class="company-description">
-                        <p class="lead">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-                        
-                        <p>When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                        
-                        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.</p>
-                        
-                        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Sidebar -->
-            <div class="col-lg-3">
-                <div class="about-right-sidebar">
-                    <!-- Client Testimonial -->
-                    <div class="testimonial-widget">
-                        <h5 class="testimonial-title">CLIENTS TESTIMONIAL</h5>
-                        <div class="testimonial-content">
-                            <div class="testimonial-image mb-3">
-                                <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Client" class="img-fluid rounded">
-                            </div>
-                            <div class="testimonial-text">
-                                <blockquote class="testimonial-quote">
-                                    <p>"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Why Choose Us Section -->
-                    <div class="why-choose-us mt-5">
-                        <h4 class="choose-us-title mb-4">WHY CHOOSE US?</h4>
-                        <div class="features-grid">
-                            <!-- Feature 1 -->
-                            <div class="feature-item text-center mb-4">
-                                <div class="feature-icon">
-                                    <i class="fas fa-handshake"></i>
-                                </div>
-                                <h6 class="feature-title">WE ARE TRUSTED</h6>
-                            </div>
-                            
-                            <!-- Feature 2 -->
-                            <div class="feature-item text-center mb-4">
-                                <div class="feature-icon">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <h6 class="feature-title">THE BEST SECURITY</h6>
-                            </div>
-                            
-                            <!-- Feature 3 -->
-                            <div class="feature-item text-center mb-4">
-                                <div class="feature-icon">
-                                    <i class="fas fa-thumbs-up"></i>
-                                </div>
-                                <h6 class="feature-title">100% GUARANTEE</h6>
-                            </div>
-                            
-                            <!-- Feature 4 -->
-                            <div class="feature-item text-center mb-4">
-                                <div class="feature-icon">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                                <h6 class="feature-title">QUICK LOCATION</h6>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="company-description">
+                    <h2 class="mb-4">ABOUT OUR COMPANY</h2>
+                    <p class="text-justify">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+                        culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+                        culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
                 </div>
             </div>
         </div>

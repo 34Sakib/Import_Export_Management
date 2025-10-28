@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Service;
@@ -36,16 +38,20 @@ class ServiceController extends Controller
                 })
                 ->addColumn('action', function ($service) {
                     return '<div style="display:flex; justify-content:center; gap:10px;">' .
-                           '<a href="'.route('admin.service.show',$service->id).'" class="btn btn-success"><i class="fas fa-eye"></i></a>' .
-                           '<a href="'.route('admin.service.edit',$service->id).'" class="btn btn-info"><i class="fas fa-edit"></i></a>' .
-                           '<form action="'.route('admin.service.destroy', $service->id).'" method="POST" style="display:inline;" onsubmit="return confirm(\'Are you sure you want to delete this service?\')">' .
-                           '<input type="hidden" name="_token" value="'.csrf_token().'">' .
-                           '<input type="hidden" name="_method" value="DELETE">' .
-                           '<button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>' .
-                           '</form>' .
-                           '</div>';
+                        '<a href="' . route('admin.service.show', $service->id) . '" class="btn btn-success"><i class="fas fa-eye"></i></a>' .
+                        '<button type="button" class="btn btn-warning editServiceBtn" data-id="' . $service->id . '">
+                <i class="fas fa-edit"></i>
+           </button>' .
+                        '<form action="' . route('admin.service.destroy', $service->id) . '" method="POST" style="display:inline;" onsubmit="return confirm(\'Are you sure?\')">' .
+                        csrf_field() .
+                        method_field('DELETE') .
+                        '<button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>' .
+                        '</form>' .
+                        '</div>';
                 })
-                ->rawColumns(['id','title', 'description', 'image', 'action'])
+
+
+                ->rawColumns(['id', 'title', 'description', 'image', 'action'])
                 ->make(true);
         }
         return view('backend.pages.service.list');
@@ -61,103 +67,153 @@ class ServiceController extends Controller
         return view('backend.pages.service.create');
     }
 
-    public function store(Request $request) {
-        try {
-            // Validate input
-            $request->validate([
-                'title' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'image' => 'nullable|mimes:jpeg,png,avif,jpg,gif,svg,webp|max:2048',
-            ]);
-    
-            $service = new Service();
-    
-            // Handle image upload if a new image is provided
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move('images', $imageName);
-                $service->image = $imageName;
-            } else {
-                $service->image = 'nophoto.png';
-            }
-    
-            // Set other fields
-            $service->title = $request->input('title');
-            $service->description = $request->input('description') ?? 'No description';
-    
-            $result = $service->save();
-    
-            if ($result) {
-                return back()->with('success', 'Service created successfully.');
-            } else {
-                throw new \Exception('Failed to save service to database.');
-            }
-        } catch (\Exception $e) {
-            // Log the error for debugging
-            Log::error('Service creation failed: ' . $e->getMessage());
-            return back()->with('error', $e->getMessage());
-        }
-    }
+    // public function store(Request $request) {
+    //     try {
+    //         $request->validate([
+    //             'title' => 'required|string|max:255',
+    //             'description' => 'nullable|string',
+    //             'image' => 'nullable|mimes:jpeg,png,avif,jpg,gif,svg,webp|max:2048',
+    //         ]);
 
-    public function update(Request $request, $id)
+    //         $service = new Service();
+
+    //         // Handle image upload if a new image is provided
+    //         if ($request->hasFile('image')) {
+    //             $image = $request->file('image');
+    //             $imageName = time() . '.' . $image->getClientOriginalExtension();
+    //             $image->move('images', $imageName);
+    //             $service->image = $imageName;
+    //         } else {
+    //             $service->image = 'nophoto.png';
+    //         }
+
+    //         // Set other fields
+    //         $service->title = $request->input('title');
+    //         $service->description = $request->input('description') ?? 'No description';
+
+    //         $result = $service->save();
+
+    //         if ($result) {
+    //             return back()->with('success', 'Service created successfully.');
+    //         } else {
+    //             throw new \Exception('Failed to save service to database.');
+    //         }
+    //     } catch (\Exception $e) {
+    //         // Log the error for debugging
+    //         Log::error('Service creation failed: ' . $e->getMessage());
+    //         return back()->with('error', $e->getMessage());
+    //     }
+    // }
+
+    // public function update(Request $request, $id)
+    // {
+    //     try {
+    //         $request->validate([
+    //             'title' => 'required|string|max:255',
+    //             'description' => 'nullable|string',
+    //             'image' => 'nullable|mimes:jpeg,png,avif,jpg,gif,svg,webp|max:2048',
+    //         ]);
+
+    //         $service = Service::findOrFail($id);
+    //         if ($request->hasFile('image')) {
+    //             $image = $request->file('image');
+    //             $imageName = time() . '.' . $image->getClientOriginalExtension();
+    //             $image->move('images', $imageName);
+    //             $service->image = $imageName;
+    //         }
+    //         $service->title = $request->input('title');
+    //         $service->description = $request->input('description') ?? 'No description';
+
+    //         $result = $service->save();
+
+    //         if ($result) {
+    //             return back()->with('success', 'Service updated successfully.');
+    //         } else {
+    //             throw new \Exception('Failed to update service in database.');
+    //         }
+    //     } catch (\Exception $e) {
+    //         Log::error('Service update failed: ' . $e->getMessage());
+    //         return back()->with('error', $e->getMessage());
+    //     }
+    // }
+
+
+
+
+    public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|mimes:jpeg,png,avif,jpg,gif,svg,webp|max:2048',
+        ]);
         try {
-            // Validate input
-            $request->validate([
-                'title' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'image' => 'nullable|mimes:jpeg,png,avif,jpg,gif,svg,webp|max:2048',
-            ]);
-
-            $service = Service::findOrFail($id);
-
-            // Handle image upload if a new image is provided
+            if ($request->input('id')) {
+                $data = Service::find($request->input('id'));
+                if (!$data) {
+                    throw new \Exception('data not found.');
+                }
+            } else {
+                $data = new Service();
+            }
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->move('images', $imageName);
-                $service->image = $imageName;
-            }
-
-            // Update other fields
-            $service->title = $request->input('title');
-            $service->description = $request->input('description') ?? 'No description';
-
-            $result = $service->save();
-
-            if ($result) {
-                return back()->with('success', 'Service updated successfully.');
+                $data->image = $imageName;
             } else {
-                throw new \Exception('Failed to update service in database.');
+                if (!$data->exists) {
+                    $data->image = 'nophoto.png';
+                }
+            }
+            $data->title = $request->input('title');
+            $data->description = $request->input('description') ?? 'No description';
+
+            $result = $data->save();
+            if ($result) {
+                return redirect()->route('admin.service.index')->with('success', 'data ' . ($request->input('id') ? 'updated' : 'created') . ' successfully.');
+            } else {
+                throw new \Exception('Failed to save data to database.');
             }
         } catch (\Exception $e) {
-            Log::error('Service update failed: ' . $e->getMessage());
+            Log::error('data  save failed: ' . $e->getMessage());
             return back()->with('error', $e->getMessage());
         }
     }
+
 
     public function show($id)
     {
-        $service = Service::findOrFail($id);
-        return view('backend.pages.service.show', compact('service'));
+        $data['service'] = Service::findOrFail($id);
+        return view('backend.pages.service.show', $data);
     }
 
-    public function edit($id){
+    public function ajaxEdit($id)
+    {
+        $service = Service::findOrFail($id);
+        return view("backend.pages.service.partials.edit_form", compact('service'));
+    }
+    public function edit($id)
+    {
         $service = Service::findOrFail($id);
         return view("backend.pages.service.edit", compact('service'));
-    } 
+    }
+    // public function ajaxEdit($id)
+    // {
+    //     $service = Service::findOrFail($id);
+    //     return view("backend.pages.service.partials.edit_form", compact('service'));
+    // }
+
 
     public function destroy($id)
     {
         try {
             $service = Service::findOrFail($id);
             $service->delete();
-            return redirect()->back()->with('success', 'Service deleted successfully.');
+            return redirect()->back()->with('success', 'data deleted successfully.');
         } catch (\Exception $e) {
             Log::error('Service deletion failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Service not found or could not be deleted.');
+            return redirect()->back()->with('error', 'data not found or could not be deleted.');
         }
     }
-
 }

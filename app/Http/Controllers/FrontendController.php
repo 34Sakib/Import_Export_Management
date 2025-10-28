@@ -9,8 +9,30 @@ class FrontendController extends Controller
 {
     public function index()
     {
+        // Get active hero slides ordered by their order field
+        $heroSlides = \App\Models\HeroSlide::where('is_active', true)
+            ->orderBy('order')
+            ->get();
+            
         $services = Service::latest()->limit(6)->get();
-        return view('frontend.index', compact('services'));
+        $latestBlogPosts = \App\Models\BlogPost::where('status', 'published')
+            ->latest('published_at')
+            ->limit(3)
+            ->get();
+            
+        // Get latest published news
+        $latestNews = \App\Models\News::where('is_published', true)
+            ->where('publish_date', '<=', now())
+            ->latest('publish_date')
+            ->limit(3)
+            ->get();
+            
+        // Get active testimonials
+        $testimonials = \App\Models\Testimonial::where('is_active', true)
+            ->latest()
+            ->get();
+            
+        return view('frontend.index', compact('heroSlides', 'services', 'latestBlogPosts', 'latestNews', 'testimonials'));
     }
 
     public function contactUs()
@@ -71,9 +93,49 @@ class FrontendController extends Controller
         return view('frontend.shipping.shipping_history', compact('services'));
     }
 
-    public function blog()
+    public function blog(Request $request)
     {
-        return view('frontend.blog.single_blog');
+        $query = \App\Models\BlogPost::where('status', 'published')
+            ->latest('published_at');
+            
+        // Search functionality
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%")
+                  ->orWhere('excerpt', 'like', "%{$search}%");
+            });
+        }
+            
+        $posts = $query->paginate(9);
+        
+        if ($request->ajax()) {
+            return view('frontend.blog.posts', compact('posts'))->render();
+        }
+            
+        return view('frontend.blog.index', compact('posts'));
+    }
+    
+    /**
+     * Display the specified blog post.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function showPost($slug)
+    {
+        $post = \App\Models\BlogPost::where('slug', $slug)
+            ->where('status', 'published')
+            ->firstOrFail();
+            
+        $recentPosts = \App\Models\BlogPost::where('status', 'published')
+            ->where('id', '!=', $post->id)
+            ->latest('published_at')
+            ->limit(3)
+            ->get();
+            
+        return view('frontend.blog.show', compact('post', 'recentPosts'));
     }
 
     public function aboutUs()

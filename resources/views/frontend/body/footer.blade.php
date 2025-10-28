@@ -5,47 +5,88 @@
             <!-- Company Info Section -->
             <div class="col-lg-3 col-md-6 mb-4">
                 <!-- Logo -->
-                <div class="mb-3">
-                    <h4 class="fw-bold" style="color: #dc3545;">
-                        <span class="bg-danger text-white px-2 py-1 rounded me-1">W</span>
-                        SHIPPING
-                    </h4>
-                </div>
-                
-                <!-- Description -->
-                <p class="text-light mb-3" style="font-size: 14px; line-height: 1.6;">
-                    It was popularised in the 1960s with the release of Letraset sheets containing.
-                </p>
-                
-                <!-- Contact Info -->
-                <div class="mb-2">
-                    <i class="fas fa-phone text-danger me-2"></i>
-                    <span style="color: #dc3545;">+88 01911 837404</span>
-                </div>
-                <div class="mb-2">
-                    <i class="fas fa-envelope text-danger me-2"></i>
-                    <span class="text-light">info@worldshipping.com</span>
-                </div>
-                <div class="mb-3">
-                    <i class="fas fa-phone text-danger me-2"></i>
-                    <span class="text-light">+88 02 723456</span>
-                </div>
-                
-                <!-- Social Media Icons -->
-                <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-rss"></i>
-                    </a>
-                </div>
+                @if($footer)
+                    @if($footer->logo)
+                    <div class="mb-3">
+                        <img src="{{ asset('images/' . $footer->logo) }}" alt="{{ $footer->title ?? 'Logo' }}" style="max-height: 60px; max-width: 200px;">
+                    </div>
+                    @else
+                    <div class="mb-3">
+                        <h4 class="fw-bold" style="color: #dc3545;">
+                            <span class="bg-danger text-white px-2 py-1 rounded me-1">W</span>
+                            {{ $footer->title ?? 'SHIPPING' }}
+                        </h4>
+                    </div>
+                    @endif
+                    
+                    <!-- Description -->
+                    @if($footer->description)
+                    <p class="text-light mb-3" style="font-size: 14px; line-height: 1.6;">
+                        {{ $footer->description }}
+                    </p>
+                    @endif
+                    
+                    <!-- Contact Info -->
+                    @if($footer->phone)
+                    <div class="mb-2">
+                        <i class="fas fa-phone text-danger me-2"></i>
+                        <span style="color: #dc3545;">{{ $footer->phone }}</span>
+                    </div>
+                    @endif
+                    
+                    @if($footer->email)
+                    <div class="mb-2">
+                        <i class="fas fa-envelope text-danger me-2"></i>
+                        <span class="text-light">{{ $footer->email }}</span>
+                    </div>
+                    @endif
+                    
+                    <!-- Social Media Icons -->
+                    <div class="d-flex gap-2">
+                        @if($footer->facebook)
+                        <a href="{{ $footer->facebook }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        @endif
+                        
+                        @if($footer->twitter)
+                        <a href="{{ $footer->twitter }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        @endif
+                        
+                        @if($footer->instagram)
+                        <a href="{{ $footer->instagram }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        @endif
+                        
+                        @if($footer->youtube)
+                        <a href="{{ $footer->youtube }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        @endif
+                    </div>
+                @else
+                    <!-- Default content if no footer data exists -->
+                    <div class="mb-3">
+                        <h4 class="fw-bold" style="color: #dc3545;">
+                            <span class="bg-danger text-white px-2 py-1 rounded me-1">W</span>
+                            SHIPPING
+                        </h4>
+                    </div>
+                    <p class="text-light mb-3" style="font-size: 14px; line-height: 1.6;">
+                        It was popularised in the 1960s with the release of Letraset sheets containing.
+                    </p>
+                    <div class="mb-2">
+                        <i class="fas fa-phone text-danger me-2"></i>
+                        <span style="color: #dc3545;">+88 01911 837404</span>
+                    </div>
+                    <div class="mb-2">
+                        <i class="fas fa-envelope text-danger me-2"></i>
+                        <span class="text-light">info@worldshipping.com</span>
+                    </div>
+                @endif
             </div>
             
             <!-- Quick Links -->
