@@ -83,6 +83,14 @@
             </ul>
           </li>
           
+          <!-- Quote Management -->
+          <li class="nav-item">
+            <a href="{{ route('admin.quotes.index') }}" class="nav-link {{ request()->is('admin/quotes*') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-file-invoice-dollar"></i>
+              <p>Quote Requests</p>
+            </a>
+          </li>
+          
           <!-- News Management -->
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -146,6 +154,14 @@
                 </a>
               </li>
             </ul>
+          </li>
+          
+          <!-- Clients Management -->
+          <li class="nav-item">
+            <a href="{{ route('admin.clients.index') }}" class="nav-link {{ request()->is('admin/clients*') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Our Clients</p>
+            </a>
           </li>
           
           <li class="nav-header">ACCOUNT MANAGEMENT</li>

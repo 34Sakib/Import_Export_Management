@@ -32,7 +32,12 @@ class FrontendController extends Controller
             ->latest()
             ->get();
             
-        return view('frontend.index', compact('heroSlides', 'services', 'latestBlogPosts', 'latestNews', 'testimonials'));
+        // Get active clients
+        $clients = \App\Models\Client::where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+            
+        return view('frontend.index', compact('heroSlides', 'services', 'latestBlogPosts', 'latestNews', 'testimonials', 'clients'));
     }
 
     public function contactUs()

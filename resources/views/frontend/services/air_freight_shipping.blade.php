@@ -350,66 +350,14 @@
 </section>
 
 <!-- Our Valuable Client Section -->
-<section class="valuable-client-section py-5 bg-white">
-    <div class="container">
-        <!-- Client Logos Section -->
-        <section class="client-logos-section py-5 bg-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 text-center mb-4">
-                        <h2 class="section-title">OUR VALUABLE CLIENT</h2>
-                        <div class="title-underline mx-auto"></div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Client Logos Carousel -->
-                        <div class="client-logos">
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=HUNTER" 
-                                     class="img-fluid client-logo-img" alt="Hunter Client">
-                            </div>
-                            
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=Premium+Labels" 
-                                     class="img-fluid client-logo-img" alt="Premium Labels Client">
-                            </div>
-                            
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=CREATIVE" 
-                                     class="img-fluid client-logo-img" alt="Creative Client">
-                            </div>
-                            
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=Adventure" 
-                                     class="img-fluid client-logo-img" alt="Adventure Client">
-                            </div>
-                            
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=MILLER" 
-                                     class="img-fluid client-logo-img" alt="Miller Client">
-                            </div>
-                            
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=GLOBAL+LOGISTICS" 
-                                     class="img-fluid client-logo-img" alt="Global Logistics Client">
-                            </div>
-                            
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=WORLD+SHIPPING" 
-                                     class="img-fluid client-logo-img" alt="World Shipping Client">
-                            </div>
-                            
-                            <div class="client-logo-item text-center p-3">
-                                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=OCEAN+CARGO" 
-                                     class="img-fluid client-logo-img" alt="Ocean Cargo Client">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+@php
+    $clients = \App\Models\Client::where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->get();
+@endphp
+
+<x-clients-section :clients="$clients" />
+
+</div>
 </section>
 @endsection

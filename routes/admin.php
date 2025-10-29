@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\TopBarSettingController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FooterSettingController;
 use App\Http\Controllers\Admin\HeroSlideController;
+use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\QuoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,6 +106,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/{id}', [HeroSlideController::class, 'destroy'])->name('destroy');
     });
 
+    // Quote Requests Routes
+    Route::prefix('quotes')->name('quotes.')->group(function () {
+        Route::get('/', [QuoteController::class, 'index'])->name('index');
+        Route::post('/', [QuoteController::class, 'store'])->name('store');
+        Route::get('/{quote}', [QuoteController::class, 'show'])->name('show');
+        
+        // Status update route - must be defined before the show route
+        Route::post('{quote}/status', [QuoteController::class, 'updateStatus'])
+            ->name('update-status')
+            ->where('quote', '[0-9]+');
+            
+        Route::delete('/{quote}', [QuoteController::class, 'destroy'])->name('destroy');
+    });
+
+
     // Top Bar Settings Routes
     Route::prefix('top-bar')->name('top-bar.')->group(function () {
         Route::get('/', [TopBarSettingController::class, 'index'])->name('index');
@@ -112,6 +129,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/{id}', [TopBarSettingController::class, 'update'])->name('update');
         Route::delete('/{id}', [TopBarSettingController::class, 'destroy'])->name('destroy');
         Route::post('/{id}/toggle-status', [TopBarSettingController::class, 'toggleStatus'])->name('toggle-status');
+    });
+
+    // Client Management Routes
+    Route::prefix('clients')->name('clients.')->group(function () {
+        Route::get('/', [ClientController::class, 'index'])->name('index');
+        Route::get('/create', [ClientController::class, 'create'])->name('create');
+        Route::post('/', [ClientController::class, 'store'])->name('store');
+        Route::get('/{client}', [ClientController::class, 'show'])->name('show');
+        Route::get('/{client}/edit', [ClientController::class, 'edit'])->name('edit');
+        Route::put('/{client}', [ClientController::class, 'update'])->name('update');
+        Route::delete('/{client}', [ClientController::class, 'destroy'])->name('destroy');
+        Route::post('/{client}/toggle-status', [ClientController::class, 'toggleStatus'])->name('toggle-status');
     });
 
     

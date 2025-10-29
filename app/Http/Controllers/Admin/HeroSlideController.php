@@ -45,11 +45,9 @@ class HeroSlideController extends Controller
                         '<button type="button" class="btn btn-warning btn-sm editSlideBtn" data-id="' . $slide->id . '">' .
                         '<i class="fas fa-edit"></i>' .
                         '</button>' .
-                        '<form action="' . route('admin.hero-slides.destroy', $slide->id) . '" method="POST" style="display:inline;" onsubmit="return confirm(\'Are you sure?\')">' .
-                        csrf_field() .
-                        method_field('DELETE') .
-                        '<button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>' .
-                        '</form>' .
+                        '<button type="button" class="btn btn-danger btn-sm delete-slide" data-id="' . $slide->id . '" data-url="' . route('admin.hero-slides.destroy', $slide->id) . '">' .
+                        '<i class="fas fa-trash-alt"></i>' .
+                        '</button>' .
                         '</div>';
                 })
                 ->rawColumns(['image', 'status', 'action'])
@@ -171,6 +169,7 @@ class HeroSlideController extends Controller
         if (!extension_loaded('gd') || !function_exists('gd_info')) {
             return response()->json([
                 'status' => 'error',
+                'title' => 'Error!',
                 'message' => 'GD extension is not installed or enabled on your server. Please enable the GD extension in your PHP configuration.'
             ], 500);
         }
@@ -230,13 +229,14 @@ class HeroSlideController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Hero slide updated successfully.',
-                'data' => $slide
+                'title' => 'Success!',
+                'message' => 'Hero slide updated successfully.'
             ]);
         } catch (\Exception $e) {
             \Log::error('Error updating hero slide: ' . $e->getMessage());
             return response()->json([
                 'status' => 'error',
+                'title' => 'Error!',
                 'message' => 'Error updating hero slide: ' . $e->getMessage()
             ], 500);
         }
@@ -255,9 +255,18 @@ class HeroSlideController extends Controller
             
             $slide->delete();
             
-            return response()->json(['success' => 'Hero slide deleted successfully.']);
+            return response()->json([
+                'status' => 'success',
+                'title' => 'Deleted!',
+                'message' => 'Hero slide has been deleted.'
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error deleting hero slide: ' . $e->getMessage()], 500);
+            \Log::error('Error deleting hero slide: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'title' => 'Error!',
+                'message' => 'Error deleting hero slide: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

@@ -243,23 +243,60 @@
             }
 
             // Show add modal
-            // ✅ Show Add New Slide Modal (fixed version)
-$('.openAddSlideModalBtn').on('click', function() {
-    $('#slideForm')[0].reset();
-    $('.is-invalid').removeClass('is-invalid');
-    $('.invalid-feedback').remove();
-    $('#imagePreview').hide();
-    $('.custom-file-label').text('Choose file');
+            $('.openAddSlideModalBtn').on('click', function() {
+                $('#slideForm')[0].reset();
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+                $('#imagePreview').hide();
+                $('.custom-file-label').text('Choose file');
 
-    $('#slideForm').attr('action', '{{ route("admin.hero-slides.store") }}');
-    $('#slideForm').attr('method', 'POST');
-    $('input[name="_method"]').remove();
+                $('#slideForm').attr('action', '{{ route("admin.hero-slides.store") }}');
+                $('#slideForm').attr('method', 'POST');
+                $('input[name="_method"]').remove();
 
-    $('#slideModalLabel').text('Add New Slide');
-    $('#saveBtn').text('Save');
-    $('#slideModal').modal('show');
-});
+                $('#slideModalLabel').text('Add New Slide');
+                $('#saveBtn').text('Save');
+                $('#slideModal').modal('show');
+            });
 
+            // Handle delete action with SweetAlert2
+            $(document).on('click', '.delete-slide', function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: form.attr('action'),
+                            type: 'POST',
+                            data: form.serialize(),
+                            success: function(response) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'The slide has been deleted.',
+                                    'success'
+                                );
+                                table.ajax.reload();
+                            },
+                            error: function(xhr) {
+                                Swal.fire(
+                                    'Error!',
+                                    'An error occurred while deleting the slide.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
 
             // Show edit modal
             $(document).on('click', '.editSlideBtn', function() {
@@ -270,6 +307,16 @@ $('.openAddSlideModalBtn').on('click', function() {
                 // Don't reset the form here, just clear validation
                 $('.is-invalid').removeClass('is-invalid');
                 $('.invalid-feedback').remove();
+                
+                // Show loading state
+                Swal.fire({
+                    title: 'Loading...',
+                    text: 'Please wait while we load the slide data',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 
                 $.get(url, function(data) {
                     // Clear any existing form data
@@ -295,9 +342,27 @@ $('.openAddSlideModalBtn').on('click', function() {
                     // Show the modal before populating fields
                     $('#slideModal').modal('show');
                     
-                    // Populate form fields with the slide data
+                    // Close loading
+                    Swal.close();
                     
-                    // Fill form with data
+                    // Populate form fields with the slide data
+                    $('#slideId').val(data.id);
+                    $('#title').val(data.title);
+                    $('#subtitle').val(data.subtitle || '');
+                    $('#description').val(data.description || '');
+                    $('#button_text').val(data.button_text || '');
+                    $('#button_url').val(data.button_url || '');
+                    $('#order').val(data.order || 0);
+                    $('#is_active').prop('checked', data.is_active == 1);
+                    
+                    // Show existing image if available
+                    if (data.image) {
+                        $('#imagePreview').attr('src', '/storage/hero-slides/' + data.image).show();
+                        $('.custom-file-label').text('Change image');
+                    } else {
+                        $('#imagePreview').hide();
+                        $('.custom-file-label').text('Choose file');
+                    }
                     $('#slideId').val(data.id);
                     $('#title').val(data.title);
                     $('#subtitle').val(data.subtitle);
@@ -466,12 +531,10 @@ $('.openAddSlideModalBtn').on('click', function() {
                 });
             });
             
-            // Handle delete
-            $(document).on('submit', 'form[action*="hero-slides/"][method="DELETE"]', function(e) {
-                e.preventDefault();
-                
-                var form = $(this);
-                var url = form.attr('action');
+            // Handle delete with SweetAlert2
+            $(document).on('click', '.delete-slide', function() {
+                var button = $(this);
+                var url = button.data('url');
                 
                 Swal.fire({
                     title: 'Are you sure?',
@@ -504,7 +567,8 @@ $('.openAddSlideModalBtn').on('click', function() {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error!',
-                                    text: xhr.responseJSON.message || 'An error occurred while deleting.',
+                                    text: xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while deleting.',
+                                    confirmButtonText: 'OK'
                                 });
                             }
                         });

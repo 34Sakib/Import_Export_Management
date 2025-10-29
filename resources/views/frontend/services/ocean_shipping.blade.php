@@ -350,58 +350,14 @@
 </section>
 
 <!-- Our Valuable Client Section -->
-<section class="valuable-client-section py-5 bg-white">
-    <div class="container">
-        <!-- Section Header -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <h2 class="client-section-title mb-1">OUR VALUABLE CLIENT</h2>
-                <div class="client-title-underline mb-4"></div>
-            </div>
-        </div>
-        
-        <!-- Client Logos Carousel -->
-        <div class="client-logos">
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=HUNTER" 
-                     class="img-fluid client-logo-img" alt="Hunter Client">
-            </div>
-            
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=Premium+Labels" 
-                     class="img-fluid client-logo-img" alt="Premium Labels Client">
-            </div>
-            
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=CREATIVE" 
-                     class="img-fluid client-logo-img" alt="Creative Client">
-            </div>
-            
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=Adventure" 
-                     class="img-fluid client-logo-img" alt="Adventure Client">
-            </div>
-            
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=MILLER" 
-                     class="img-fluid client-logo-img" alt="Miller Client">
-            </div>
-            
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=GLOBAL+LOGISTICS" 
-                     class="img-fluid client-logo-img" alt="Global Logistics Client">
-            </div>
-            
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=WORLD+SHIPPING" 
-                     class="img-fluid client-logo-img" alt="World Shipping Client">
-            </div>
-            
-            <div class="client-logo-item text-center p-3">
-                <img src="https://via.placeholder.com/150x80/f8f9fa/6c757d?text=OCEAN+CARGO" 
-                     class="img-fluid client-logo-img" alt="Ocean Cargo Client">
-            </div>
-        </div>
-    </div>
+@php
+    $clients = \App\Models\Client::where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->get();
+@endphp
+
+<x-clients-section :clients="$clients" />
+</div>
 </section>
+@endsection
 @endsection

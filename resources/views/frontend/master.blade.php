@@ -33,6 +33,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/css/custom.css') }}">
     
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
     <!-- Scripts -->
     <script src="{{ asset('frontend/js/main.js') }}" defer></script>
     
@@ -66,10 +69,34 @@
     @stack('modals')
     @stack('scripts')
     
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     
     <!-- Carousels JavaScript -->
     <script src="{{ asset('frontend/js/carousels.js') }}"></script>
+    
+    <!-- Initialize SweetAlert2 -->
+    <script>
+        // Set default options for all SweetAlert2 modals
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-primary mx-2',
+                cancelButton: 'btn btn-danger mx-2',
+                popup: 'border-radius-20',
+                container: 'sweetalert-container'
+            },
+            buttonsStyling: false,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: true,
+            allowEnterKey: true,
+            showLoaderOnConfirm: true
+        });
+    </script>
 </body>
 </html>

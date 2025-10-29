@@ -79,30 +79,37 @@
 @push('scripts')
 <script>
     $(document).ready(function(){
-        // Initialize Slick slider for hero section
-        if ($('.hero-slider').length) {
-            $('.hero-slider').slick({
-                dots: true,
-                infinite: true,
-                speed: 800,
-                fade: true,
-                cssEase: 'linear',
-                autoplay: true,
-                autoplaySpeed: 5000,
-                arrows: true,
-                prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
-                nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>',
-                responsive: [
-                    {
-                        breakpoint: 992,
-                        settings: {
-                            arrows: false
+            // Initialize Slick slider for hero section with enhanced autoplay
+            if ($('.hero-slider').length) {
+                $('.hero-slider').slick({
+                    dots: true,
+                    infinite: true,
+                    speed: 1000,  // Slightly faster transition
+                    fade: true,
+                    cssEase: 'cubic-bezier(0.4, 0, 0.2, 1)',  // Smoother easing
+                    autoplay: true,
+                    autoplaySpeed: 5000,  // 5 seconds per slide
+                    pauseOnHover: false,   // Keep autoplay running on hover
+                    pauseOnFocus: false,   // Keep autoplay running on focus
+                    pauseOnDotsHover: false, // Keep autoplay running when hovering dots
+                    arrows: true,
+                    prevArrow: '<button type="button" class="slick-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>',
+                    nextArrow: '<button type="button" class="slick-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>',
+                    responsive: [
+                        {
+                            breakpoint: 992,
+                            settings: {
+                                arrows: false,
+                                dots: true,
+                                autoplay: true,
+                                pauseOnHover: false,
+                                pauseOnFocus: false
+                            }
                         }
-                    }
-                ]
-            });
-        }
-    });
+                    ]
+                });
+            }
+        });
 </script>
 @endpush
 
@@ -499,55 +506,234 @@
                     </div>
                     
                     <!-- Quote Form -->
-                    <form class="quote-form">
+                    <form id="quoteForm" class="quote-form" action="{{ route('admin.quotes.store') }}" method="POST" onsubmit="event.preventDefault(); submitQuoteForm(this);">
+                        @csrf
                         <div class="row g-3">
                             <!-- Full Name -->
                             <div class="col-12">
-                                <input type="text" class="form-control form-control-lg" placeholder="Full Name" style="border: none; padding: 15px;">
+                                <input type="text" name="name" class="form-control form-control-lg @error('name') is-invalid @enderror" 
+                                    placeholder="Full Name" value="{{ old('name') }}" style="border: none; padding: 15px;" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Email and Mobile -->
                             <div class="col-md-6">
-                                <input type="email" class="form-control form-control-lg" placeholder="Email" style="border: none; padding: 15px;">
+                                <input type="email" name="email" class="form-control form-control-lg @error('email') is-invalid @enderror" 
+                                    placeholder="Email" value="{{ old('email') }}" style="border: none; padding: 15px;" required>
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
-                                <input type="tel" class="form-control form-control-lg" placeholder="Mobile" style="border: none; padding: 15px;">
+                                <input type="tel" name="phone" class="form-control form-control-lg @error('phone') is-invalid @enderror" 
+                                    placeholder="Phone" value="{{ old('phone') }}" style="border: none; padding: 15px;" required>
+                                @error('phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             
-                            <!-- Destination From and To -->
+                            <!-- Origin and Destination -->
                             <div class="col-md-6">
-                                <input type="text" class="form-control form-control-lg" placeholder="Destination From" style="border: none; padding: 15px;">
+                                <input type="text" name="origin" class="form-control form-control-lg @error('origin') is-invalid @enderror" 
+                                    placeholder="Origin (From)" value="{{ old('origin') }}" style="border: none; padding: 15px;" required>
+                                @error('origin')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control form-control-lg" placeholder="Destination To" style="border: none; padding: 15px;">
+                                <input type="text" name="destination" class="form-control form-control-lg @error('destination') is-invalid @enderror" 
+                                    placeholder="Destination (To)" value="{{ old('destination') }}" style="border: none; padding: 15px;" required>
+                                @error('destination')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             
-                            <!-- Shipping Type and Date -->
+                            <!-- Weight and Dimensions -->
                             <div class="col-md-6">
-                                <select class="form-select form-select-lg" style="border: none; padding: 15px;">
-                                    <option selected>Shipping Type</option>
-                                    <option value="air">Air Freight</option>
-                                    <option value="sea">Sea Freight</option>
-                                    <option value="road">Road Freight</option>
-                                </select>
+                                <input type="text" name="weight" class="form-control form-control-lg @error('weight') is-invalid @enderror" 
+                                    placeholder="Weight (kg)" value="{{ old('weight') }}" style="border: none; padding: 15px;" required>
+                                @error('weight')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
-                                <input type="date" class="form-control form-control-lg" placeholder="Date" style="border: none; padding: 15px;">
+                                <input type="text" name="dimensions" class="form-control form-control-lg @error('dimensions') is-invalid @enderror" 
+                                    placeholder="Dimensions (LxWxH)" value="{{ old('dimensions') }}" style="border: none; padding: 15px;" required>
+                                @error('dimensions')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Message -->
                             <div class="col-12">
-                                <textarea class="form-control" rows="4" placeholder="Message" style="border: none; padding: 15px; resize: none;"></textarea>
+                                <textarea name="message" class="form-control @error('message') is-invalid @enderror" 
+                                    rows="4" placeholder="Additional Message" style="border: none; padding: 15px; resize: none;" required>{{ old('message') }}</textarea>
+                                @error('message')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Submit Button -->
                             <div class="col-12 mt-4">
-                                <button type="submit" class="btn btn-dark btn-lg px-5 py-3 fw-semibold text-uppercase" style="letter-spacing: 1px;">
-                                    SEND US QUOTE
+                                <button type="submit" id="submitQuoteBtn" class="btn btn-dark btn-lg px-5 py-3 fw-semibold text-uppercase" style="letter-spacing: 1px;">
+                                    <span id="submitText">SEND US QUOTE</span>
+                                    <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
                     </form>
+                    
+                    <script>
+                    async function submitQuoteForm(form) {
+                        // Show loading state
+                        const submitBtn = document.getElementById('submitQuoteBtn');
+                        const submitText = document.getElementById('submitText');
+                        const submitSpinner = document.getElementById('submitSpinner');
+                        
+                        // Update button state
+                        submitBtn.disabled = true;
+                        submitText.textContent = 'SENDING...';
+                        submitSpinner.classList.remove('d-none');
+                        
+                        // Show loading state
+                        const loadingSwal = Swal.fire({
+                            title: 'Sending your request',
+                            html: 'Please wait while we process your quote...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        try {
+                            const formData = new FormData(form);
+                            
+                            const response = await fetch(form.action, {
+                                method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'Accept': 'application/json'
+                                },
+                                body: formData
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (!response.ok) {
+                                throw { status: response.status, data };
+                            }
+                            
+                            // Close loading and show success
+                            await loadingSwal.close();
+                            
+                            await Swal.fire({
+                                icon: 'success',
+                                title: 'Thank You!',
+                                html: `
+                                    <div class="text-center">
+                                        <i class="fas fa-check-circle text-success mb-3" style="font-size: 4rem;"></i>
+                                        <h4 class="mb-3">Request Submitted Successfully!</h4>
+                                        <p class="mb-0">We have received your request and will contact you shortly.</p>
+                                    </div>
+                                `,
+                                confirmButtonText: 'Close',
+                                confirmButtonColor: '#dc3545',
+                                customClass: {
+                                    popup: 'border-radius-20',
+                                    confirmButton: 'px-4 py-2',
+                                },
+                                showCloseButton: true
+                            });
+                            
+                            // Reset form
+                            form.reset();
+                            
+                        } catch (error) {
+                            console.error('Error:', error);
+                            await loadingSwal.close();
+                            
+                            if (error.status === 422 && error.data && error.data.errors) {
+                                // Validation errors
+                                const errors = error.data.errors;
+                                let errorMessages = [];
+                                
+                                // Clear previous errors
+                                document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+                                document.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+                                
+                                Object.entries(errors).forEach(([field, messages]) => {
+                                    const input = form.querySelector(`[name="${field}"]`);
+                                    if (input) {
+                                        input.classList.add('is-invalid');
+                                        const errorDiv = document.createElement('div');
+                                        errorDiv.className = 'invalid-feedback';
+                                        errorDiv.textContent = messages[0];
+                                        input.parentNode.insertBefore(errorDiv, input.nextSibling);
+                                        errorMessages.push(messages[0]);
+                                    }
+                                });
+                                
+                                await Swal.fire({
+                                    icon: 'error',
+                                    title: 'Validation Error',
+                                    html: `
+                                        <div class="text-start">
+                                            <p>Please fix the following errors:</p>
+                                            <ul class="mb-0 ps-3">
+                                                ${errorMessages.map(msg => `<li>${msg}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    `,
+                                    confirmButtonText: 'Got it',
+                                    confirmButtonColor: '#dc3545',
+                                    customClass: {
+                                        popup: 'border-radius-20',
+                                        confirmButton: 'px-4 py-2',
+                                    },
+                                    showCloseButton: true
+                                });
+                            } else {
+                                // Other errors
+                                await Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: error.data?.message || 'Failed to submit the form. Please try again.',
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#dc3545',
+                                    customClass: {
+                                        popup: 'border-radius-20',
+                                        confirmButton: 'px-4 py-2',
+                                    }
+                                });
+                            }
+                        } finally {
+                            // Reset button state
+                            submitBtn.disabled = false;
+                            submitText.textContent = 'SEND US QUOTE';
+                            submitSpinner.classList.add('d-none');
+                        }
+                    }
+                    
+                    document.getElementById('quoteForm').addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        submitQuoteForm(this);
+                    });
+                    </script>
+                    
+                    <!-- Add this style to ensure SweetAlert2 z-index is above other elements -->
+                    <style>
+                        .swal2-container {
+                            z-index: 2000 !important;
+                        }
+                        .swal2-popup {
+                            border-radius: 20px !important;
+                            padding: 2rem !important;
+                            border-radius: 20px !important;
+                        }
+                    </style>
                 </div>
             </div>
             
@@ -732,106 +918,169 @@
 </section>
 
 <!-- Latest News and Testimonial Section -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-white">
     <div class="container">
-        <div class="row">
+        <div class="row g-4">
             <!-- Latest News Section -->
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="news-section">
-                    <!-- Section Header -->
-                    <div class="section-header mb-4">
-                        <h3 class="fw-bold text-dark mb-2">LATEST NEWS</h3>
-                        <div class="bg-danger" style="width: 50px; height: 3px;"></div>
-                    </div>
-                    
-                    @if($latestNews->count() > 0)
-                    <!-- News Items -->
-                    <div class="news-items">
-                        @foreach($latestNews as $news)
-                        <div class="news-item d-flex mb-3">
-                            <div class="news-date bg-danger text-white text-center p-3 me-3" style="min-width: 80px;">
-                                <div class="date-number fw-bold" style="font-size: 2rem; line-height: 1;">{{ $news->created_at->format('d') }}</div>
-                                <div class="date-month text-uppercase" style="font-size: 12px; letter-spacing: 1px;">{{ strtoupper($news->created_at->format('M')) }}</div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <!-- Section Header -->
+                        <div class="section-header mb-4">
+                            <h2 class="fw-bold text-dark mb-2">LATEST NEWS</h2>
+                            <div class="bg-danger" style="width: 50px; height: 3px;"></div>
+                        </div>
+                        
+                        @if($latestNews->count() > 0)
+                        <!-- News Items -->
+                        <div class="news-items">
+                            @foreach($latestNews as $news)
+                            <div class="news-item d-flex mb-4 pb-3 border-bottom">
+                                <div class="news-date bg-danger text-white text-center p-2 me-3" style="min-width: 70px; border-radius: 8px;">
+                                    <div class="date-number fw-bold" style="font-size: 1.5rem; line-height: 1;">{{ $news->created_at->format('d') }}</div>
+                                    <div class="date-month text-uppercase" style="font-size: 11px; letter-spacing: 1px;">{{ strtoupper($news->created_at->format('M')) }}</div>
+                                </div>
+                                <div class="news-content">
+                                    <h6 class="fw-bold mb-1">
+                                        <a href="#" class="text-dark text-decoration-none hover-text-danger">{{ $news->title }}</a>
+                                    </h6>
+                                    <p class="text-muted small mb-2">
+                                        <i class="far fa-user me-1"></i> {{ $news->author ?? 'Admin' }}
+                                        <span class="mx-2">|</span>
+                                        <i class="far fa-calendar-alt me-1"></i> {{ $news->created_at->format('M d, Y') }}
+                                    </p>
+                                    <p class="text-muted mb-0" style="font-size: 14px; line-height: 1.5;">
+                                        {{ Str::limit(strip_tags($news->content), 120) }}
+                                    </p>
+                                    <a href="#" class="text-danger text-decoration-none small mt-2 d-inline-block">
+                                        Read More <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="news-content bg-white p-3 flex-grow-1 shadow-sm">
-                                <h6 class="fw-bold mb-2 text-dark">{{ $news->title }}</h6>
-                                <p class="text-muted mb-1" style="font-size: 12px;">
-                                    By <span class="text-danger">{{ $news->author ?? 'Admin' }}</span>
-                                </p>
-                                <p class="text-muted mb-0" style="font-size: 13px; line-height: 1.4;">
-                                    {{ Str::limit(strip_tags($news->content), 100) }}
-                                </p>
+                            @endforeach
+                        </div>
+                        @else
+                        <div class="text-center py-4">
+                            <div class="py-4">
+                                <i class="far fa-newspaper fa-3x text-muted mb-3"></i>
+                                <p class="text-muted mb-0">No news available at the moment. Check back later!</p>
                             </div>
                         </div>
-                        @endforeach
-                    </div>
-                    @else
-                    <div class="text-center py-4">
-                        <p class="text-muted">No news available at the moment. Check back later!</p>
-                    </div>
-                    @endif
+                        @endif
+                        
+                        <div class="text-center mt-4">
+                            <a href="{{ url('/blog') }}" class="btn btn-outline-danger btn-sm">
+                                View All News <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Testimonial Section -->
             <div class="col-lg-6">
-                <div class="testimonial-section">
-                    <!-- Section Header -->
-                    <div class="section-header mb-4 text-center">
-                        <h2 class="display-5 fw-bold text-dark mb-2">TESTIMONIALS</h2>
-                        <div class="bg-danger mx-auto" style="width: 50px; height: 3px;"></div>
-                        <p class="text-muted mt-3">What our clients say about our services</p>
-                    </div>
-                    
-                    @if($testimonials->count() > 0)
-                    <!-- Testimonial Carousel -->
-                    <div class="testimonial-carousel">
-                        @foreach($testimonials as $testimonial)
-                        <!-- Testimonial Item -->
-                        <div class="testimonial-item">
-                            <div class="testimonial-content d-flex">
-                                <!-- Client Photo -->
-                                <div class="testimonial-image me-4" style="min-width: 120px;">
-                                    @if($testimonial->image)
-                                    <img src="{{ asset('images/' . $testimonial->image) }}" 
-                                         alt="{{ $testimonial->name }}" class="rounded-circle img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
-                                    @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=random" 
-                                         alt="{{ $testimonial->name }}" class="rounded-circle img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
-                                    @endif
-                                </div>
-                                
-                                <!-- Testimonial Text -->
-                                <div class="testimonial-text">
-                                    <div class="testimonial-rating mb-2">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            @if($i <= $testimonial->rating)
-                                            <i class="fas fa-star text-warning"></i>
-                                            @else
-                                            <i class="far fa-star text-warning"></i>
-                                            @endif
-                                        @endfor
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <!-- Section Header -->
+                        <div class="section-header text-center mb-4">
+                            <h2 class="fw-bold text-dark mb-2">TESTIMONIALS</h2>
+                            <div class="bg-danger mx-auto" style="width: 50px; height: 3px;"></div>
+                            <p class="text-muted mt-3 mb-0">What our clients say about our services</p>
+                        </div>
+                        
+                        @if($testimonials->count() > 0)
+                        <!-- Testimonial Carousel -->
+                        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @foreach($testimonials as $index => $testimonial)
+                                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                    <div class="testimonial-item p-4">
+                                        <div class="testimonial-content text-center">
+                                            <!-- Client Photo -->
+                                            <div class="testimonial-image mx-auto mb-4">
+                                                @if($testimonial->image)
+                                                <img src="{{ asset('images/testimonials/' . $testimonial->image) }}" 
+                                                     alt="{{ $testimonial->name }}" 
+                                                     class="rounded-circle img-fluid border border-3 border-danger" 
+                                                     style="width: 100px; height: 100px; object-fit: cover;"
+                                                     onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=random'">
+                                                @else
+                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($testimonial->name) }}&background=random" 
+                                                     alt="{{ $testimonial->name }}" 
+                                                     class="rounded-circle img-fluid border border-3 border-danger" 
+                                                     style="width: 100px; height: 100px; object-fit: cover;">
+                                                @endif
+                                            </div>
+                                            
+                                            <!-- Testimonial Text -->
+                                            <div class="testimonial-text">
+                                                <div class="testimonial-rating mb-3">
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        <i class="fas fa-star {{ $i <= $testimonial->rating ? 'text-warning' : 'text-muted' }}"></i>
+                                                    @endfor
+                                                </div>
+                                                
+                                                <div class="testimonial-quote mb-4">
+                                                    <i class="fas fa-quote-left text-danger me-2"></i>
+                                                    <p class="fst-italic text-muted mb-0 px-4" style="line-height: 1.7;">
+                                                        {{ $testimonial->content }}
+                                                    </p>
+                                                    <i class="fas fa-quote-right text-danger ms-2"></i>
+                                                </div>
+                                                
+                                                <h5 class="mb-1 fw-bold">{{ $testimonial->name }}</h5>
+                                                @if($testimonial->position || $testimonial->company)
+                                                <p class="text-muted small mb-0">
+                                                    {{ $testimonial->position }}{{ $testimonial->position && $testimonial->company ? ', ' : '' }}
+                                                    @if($testimonial->company)
+                                                    <span class="text-danger">{{ $testimonial->company }}</span>
+                                                    @endif
+                                                </p>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
-                                    
-                                    <p class="fst-italic text-muted mb-3">
-                                        "{{ $testimonial->content }}"
-                                    </p>
-                                    
-                                    <h5 class="mb-1 fw-bold">{{ $testimonial->name }}</h5>
-                                    @if($testimonial->position)
-                                    <p class="text-muted small mb-0">{{ $testimonial->position }}{{ $testimonial->company ? ', ' . $testimonial->company : '' }}</p>
-                                    @endif
                                 </div>
+                                @endforeach
+                            </div>
+                            
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon bg-danger rounded-circle" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon bg-danger rounded-circle" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            
+                            <!-- Carousel Indicators -->
+                            <div class="carousel-indicators position-relative mt-4">
+                                @foreach($testimonials as $index => $testimonial)
+                                <button type="button" data-bs-target="#testimonialCarousel" 
+                                        data-bs-slide-to="{{ $index }}" 
+                                        class="{{ $loop->first ? 'active' : '' }} bg-secondary" 
+                                        style="width: 10px; height: 10px; border-radius: 50%; border: none; margin: 0 3px;"
+                                        aria-current="{{ $loop->first ? 'true' : 'false' }}" 
+                                        aria-label="Slide {{ $index + 1 }}">
+                                </button>
+                                @endforeach
                             </div>
                         </div>
-                        @endforeach
-                    </div>
-                    @else
-                    <div class="text-center py-4">
-                        <p class="text-muted">No testimonials available at the moment. Check back later!</p>
-                    </div>
-                    @endif
+                        @else
+                        <div class="text-center py-5">
+                            <div class="py-4">
+                                <i class="far fa-comment-dots fa-3x text-muted mb-3"></i>
+                                <p class="text-muted mb-0">No testimonials available at the moment. Check back later!</p>
+                            </div>
+                        </div>
+                        @endif
+                        
+                        <div class="text-center mt-4">
+                            <a href="#" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#submitTestimonialModal">
+                                <i class="far fa-edit me-1"></i> Submit Your Review
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -840,81 +1089,12 @@
 </section>
 
 <!-- Our Valuable Client Section -->
-<section class="py-5 bg-white">
-    <div class="container">
-        <!-- Section Header -->
-        <div class="section-header mb-5">
-            <h3 class="fw-bold text-dark mb-2">OUR VALUABLE CLIENTS</h3>
-            <div class="bg-danger" style="width: 50px; height: 3px;"></div>
-        </div>
-        
-        <!-- Client Logos Carousel -->
-        <div class="client-logos">
-            <!-- Client 1 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Premium+Labels" 
-                         alt="Premium Labels" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-            
-            <!-- Client 2 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Creative" 
-                         alt="Creative" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-            
-            <!-- Client 3 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Adventure" 
-                         alt="Adventure" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-            
-            <!-- Client 4 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Global+Logistics" 
-                         alt="Global Logistics" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-            
-            <!-- Client 5 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Ocean+Freight" 
-                         alt="Ocean Freight" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-            
-            <!-- Client 6 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Air+Cargo" 
-                         alt="Air Cargo" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-            
-            <!-- Client 7 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Worldwide" 
-                         alt="Worldwide" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-            
-            <!-- Client 8 -->
-            <div class="client-logo-item text-center p-3">
-                <div class="client-logo bg-light p-3 h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://via.placeholder.com/150x80/cccccc/666666?text=Express+Shipping" 
-                         alt="Express Shipping" class="img-fluid" style="max-height: 50px; opacity: 0.7; transition: all 0.3s ease;">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@php
+    $clients = \App\Models\Client::where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->get();
+@endphp
+
+<x-clients-section :clients="$clients" />
 
 @endsection
